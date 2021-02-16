@@ -1,0 +1,20 @@
+---
+# ip_haproxy: define haproxy IP Adress here
+# kube_api_port: use this for define Kubernetes API Port
+# ingress_controller_port : define your ingress port here
+# http_port: define http port here
+# https_port : use this to define https port
+# kube_master : this is to define kube master identity
+# kube_worker : this is use to define kube worker identity 
+ip_haproxy: 10.104.0.4
+kube_api_port: 6443
+ingress_controller_port: 30298
+http_port: 80
+https_port: 443
+kube_master:
+  - do-kube-master-01 10.104.0.5 
+  - do-kube-master-02 10.104.0.7
+  - do-kube-master-03 10.104.0.6
+kube_worker:
+  - do-kube-worker-01 10.104.0.8
+  - do-kube-worker-02 10.104.0.9

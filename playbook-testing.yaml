@@ -1,7 +1,8 @@
 ---
+# - hosts: localhost
+  # connection: local
 - hosts: all
-  #connection: local
   become: true
 
   roles:
-    - docker
+    - haproxy
