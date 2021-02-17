@@ -1,0 +1,59 @@
+---
+- name: Install NFS Utils
+  yum:
+    name: "nfs-utils"
+    state: present
+
+- name: Create shared directory
+  file:
+    path: /home/taufiq/kube-data
+    state: directory
+    owner: centos
+    group: centos
+    mode: 0755
+
+- name: Starting Service
+  systemd:
+    name: "{{ item }}"
+    state: started
+  loop:
+    - firewalld
+    - rpcbind
+    - nfs-server
+    - nfs-lock
+    - nfs-idmap
+
+- name: Enabling Service
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - firewalld
+    - rpcbind
+    - nfs-server
+
+- name: Add shared folder to /etc/exports
+  template:
+    src: "export.conf.j2"
+    dest: "/etc/exports"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload NFS
+  command: "exportfs -ar"
+
+- name: Enable firewall for nfs-server
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - nfs
+    - mountd
+    - rpc-bind
+
+- name: Reload firewall configuration
+  command: "firewall-cmd --reload"

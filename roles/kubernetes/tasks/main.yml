@@ -1,0 +1,5 @@
+---
+- include_tasks: firewall.yml
+- include_tasks: enable_br_filter.yml
+- include_tasks: install.yml
+- include_tasks: addons_package.yml

@@ -1,0 +1,26 @@
+---
+- name: Install java
+  yum:
+    name: java-1.8.0-openjdk-devel
+    state: present
+
+- name: Configuring jenkins repository
+  get_url:
+    url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Configuring jenkins gpg key
+  rpm_key:
+    key: https://pkg.jenkins.io/redhat/jenkins.io.key
+    state: present
+
+- name: Installing jenkins
+  yum:
+    name: jenkins
+    state: present
+
+- name: Enabling and starting jenkins service
+  systemd:
+    name: jenkins
+    state: started
+    enabled: true

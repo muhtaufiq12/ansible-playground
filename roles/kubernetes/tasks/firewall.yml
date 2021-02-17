@@ -1,0 +1,37 @@
+---
+- name: Install firewalld
+  yum:
+    name: firewalld
+    state: present
+
+- name: Enable firewall service
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable firewall port for kubernetes
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - 6443/tcp
+    - 2379/tcp
+    - 2380/tcp
+    - 10250/tcp
+    - 10251/tcp
+    - 10252/tcp
+    - 10255/tcp
+    - 8472/udp
+    - 4240/tcp
+    - 4244/tcp
+    - 4245/tcp
+    - 6942/tcp
+    - 9090/tcp
+    - 9876/tcp
+    - 9890/tcp
+    - 9891/tcp
+    - 9892/tcp
+    - 9893/tcp
